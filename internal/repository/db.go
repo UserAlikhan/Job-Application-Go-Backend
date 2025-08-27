@@ -1,0 +1,40 @@
+package repository
+
+import (
+	"database/sql"
+	"os"
+
+	_ "modernc.org/sqlite"
+)
+
+func InitDB() (*sql.DB, error) {
+	db, err := sql.Open("sqlite", os.Getenv("DB_PATH"))
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = createTable(db)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+func createTable(db *sql.DB) error {
+	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		username TEXT NOT NULL UNIQUE,
+		password TEXT NOT NULL UNIQUE,
+		email TEXT NOT NULL UNIQUE,
+		isAdmin BOOLEAN DEFAULT 0,
+		profile_picture TEXT,
+
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	)`)
+
+	return err
+}
