@@ -13,3 +13,7 @@ func CreateJob(db *sql.DB, job *models.Job) (*models.Job, error) {
 func GetAllJobs(db *sql.DB) ([]*models.Job, error) {
 	return repository.GetAllJobs(db)
 }
+
+func GetJobsByUserID(db *sql.DB, userID int) ([]*models.Job, error) {
+	return repository.GetJobsByUserID(db, userID)
+}

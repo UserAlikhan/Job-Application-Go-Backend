@@ -37,12 +37,44 @@ func GetAllJobs(db *sql.DB) ([]*models.Job, error) {
 	}
 
 	var jobs []*models.Job
+
 	for rows.Next() {
 		job := &models.Job{}
 		if err := rows.Scan(
-			&job.Title, &job.Description, &job.Location,
-			&job.Company, &job.Salary, &job.UserID,
-			&job.CreatedAt, &job.UpdatedAt,
+			&job.ID, &job.Title, &job.Description,
+			&job.Location, &job.Company, &job.Salary,
+			&job.UserID, &job.CreatedAt, &job.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+
+		// second query to fetch the user data
+		user, err := GetUserByID(db, job.UserID)
+		if err == nil {
+			job.User = user
+		}
+
+		jobs = append(jobs, job)
+	}
+
+	return jobs, nil
+}
+
+func GetJobsByUserID(db *sql.DB, userID int) ([]*models.Job, error) {
+	rows, err := db.Query("SELECT * FROM jobs WHERE user_id = ?", userID)
+	if err != nil {
+		return nil, err
+	}
+
+	var jobs []*models.Job
+
+	for rows.Next() {
+		job := &models.Job{}
+
+		if err := rows.Scan(
+			&job.ID, &job.Title, &job.Description,
+			&job.Location, &job.Company, &job.Salary,
+			&job.UserID, &job.CreatedAt, &job.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}

@@ -14,9 +14,8 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 		r.POST("/login", handlers.LoginHandler(db))
 		r.POST("/register", handlers.RegisterHandler(db))
 
-		// USER ROUTES // employer
+		// USER ROUTES (Apply AuthMiddleware)
 		authenticated := r.Group("/")
-		// Apply AuthMiddleware
 		authenticated.Use(middlewares.AuthMiddleware())
 		authenticated.GET("/users/:id", handlers.GetUserByIdHandler(db))
 		authenticated.PATCH("/users/:id", handlers.UpdateUserProfileHandler(db))
@@ -26,6 +25,8 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 
 		// Job Routes
 		authenticated.POST("/jobs", handlers.CreateJobHandler(db))
+		//
 		r.GET("/jobs", handlers.GetAllJobsHandler(db))
+		r.GET("/jobs/:userID", handlers.GetJobsByUserIDHandler(db))
 	}
 }
