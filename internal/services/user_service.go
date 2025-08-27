@@ -23,3 +23,7 @@ func UpdateUserProfile(db *sql.DB, id int, username string, email string) (*mode
 
 	return repository.UpdateUserProfile(db, user)
 }
+
+func UploadProfilePicture(db *sql.DB, id int, profilePicture string) error {
+	return repository.UploadProfilePicture(db, id, profilePicture)
+}

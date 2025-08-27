@@ -98,3 +98,12 @@ func UpdateUserProfile(db *sql.DB, user *models.User) (*models.User, error) {
 
 	return user, nil
 }
+
+func UploadProfilePicture(db *sql.DB, id int, profilePicture string) error {
+	_, err := db.Exec("UPDATE users SET profile_picture = ? WHERE id = ?", profilePicture, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

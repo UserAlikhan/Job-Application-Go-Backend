@@ -1,0 +1,12 @@
+POST http://localhost:8080/jobs
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImlzQWRtaW4iOmZhbHNlLCJleHAiOjE3NTYzNDM5MjV9.1X5_F3JelZsUUuYBUdjd2p76Q5kt-Xg9TxrG0ORYLZU
+
+{
+    "title": "Quantative Developer",
+    "description": "Senior Quantative Developer",
+    "location": "New York, New York, United States",
+    "company": "Citadel",
+    "salary": "$750,000",
+    "user_id": 1
+}

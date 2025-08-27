@@ -24,17 +24,34 @@ func InitDB() (*sql.DB, error) {
 }
 
 func createTable(db *sql.DB) error {
-	_, err := db.Exec(`CREATE TABLE IF NOT EXISTS users (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		username TEXT NOT NULL UNIQUE,
-		password TEXT NOT NULL UNIQUE,
-		email TEXT NOT NULL UNIQUE,
-		isAdmin BOOLEAN DEFAULT 0,
-		profile_picture TEXT,
+	_, err := db.Exec(`
+		CREATE TABLE IF NOT EXISTS users (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			username TEXT NOT NULL UNIQUE,
+			password TEXT NOT NULL UNIQUE,
+			email TEXT NOT NULL UNIQUE,
+			isAdmin BOOLEAN DEFAULT 0,
+			profile_picture TEXT,
 
-		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-		updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-	)`)
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		);
+
+		CREATE TABLE IF NOT EXISTS jobs (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			title TEXT NOT NULL,
+			description TEXT NOT NULL,
+			location TEXT NOT NULL,
+			company TEXT NOT NULL,
+			salary TEXT NOT NULL,
+			user_id INTEGER NOT NULL,
+			
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+			FOREIGN KEY (user_id) REFERENCES users(id)
+		);
+	`)
 
 	return err
 }

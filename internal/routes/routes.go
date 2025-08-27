@@ -23,5 +23,9 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 		authenticated.PATCH("/users/:id/picture", handlers.UpdateUserProfilePicture(db))
 		//
 		r.GET("/users", handlers.GetAllUsersHandler(db))
+
+		// Job Routes
+		authenticated.POST("/jobs", handlers.CreateJobHandler(db))
+		r.GET("/jobs", handlers.GetAllJobsHandler(db))
 	}
 }
