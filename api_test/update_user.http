@@ -1,8 +1,8 @@
-PATCH http://localhost:8080/users/3
+PATCH http://localhost:8080/users/6
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiIiLCJpc0FkbWluIjpmYWxzZSwiZXhwIjoxNzU2MjA4NTU3fQ.UvUzEh9N3IihudF_WDuwUqK0yf8bJY2qnQSnC2w7obU
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiIiLCJpc0FkbWluIjpmYWxzZSwiZXhwIjoxNzU2MzMxMTAwfQ.w6TIwGCt_vZxJPJrrD16PZVK4YnAYUUSPBTyY7nNh1U
 
 {
-    "username": "3333",
-    "email": "user3!!!!_newemail@mail.ru"
+    "username": "user6",
+    "email": "user6@gmail.com"
 }

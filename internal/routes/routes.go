@@ -20,6 +20,7 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 		authenticated.Use(middlewares.AuthMiddleware())
 		authenticated.GET("/users/:id", handlers.GetUserByIdHandler(db))
 		authenticated.PATCH("/users/:id", handlers.UpdateUserProfileHandler(db))
+		authenticated.PATCH("/users/:id/picture", handlers.UpdateUserProfilePicture(db))
 		//
 		r.GET("/users", handlers.GetAllUsersHandler(db))
 	}

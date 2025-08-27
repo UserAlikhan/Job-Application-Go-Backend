@@ -19,7 +19,7 @@ func LoginHandler(db *sql.DB) gin.HandlerFunc {
 
 		token, err := services.LoginUser(db, user.Username, user.Password)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid credentials"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 

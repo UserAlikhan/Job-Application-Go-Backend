@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"job_portal/internal/services"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -69,8 +70,38 @@ func UpdateUserProfileHandler(db *sql.DB) gin.HandlerFunc {
 		updatedUser, err := services.UpdateUserProfile(db, id, userUpdate.Username, userUpdate.Email)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 
 		ctx.JSON(http.StatusOK, updatedUser)
+	}
+}
+
+func UpdateUserProfilePicture(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invlaid ID"})
+			return
+		}
+
+		userID := ctx.GetInt("userID")
+		isAdmin := ctx.GetBool("isAdmn")
+
+		if !isAdmin && userID != id {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized to update this profile"})
+			return
+		}
+
+		file, err := ctx.FormFile("profile_picture")
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Error upload the file"})
+			return
+		}
+
+		if err := os.MkdirAll(os.Getenv("UPLOAD_DIR"), os.ModePerm); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error creading upload directory"})
+			return
+		}
 	}
 }

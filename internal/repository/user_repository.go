@@ -28,9 +28,9 @@ func GetAllUsers(db *sql.DB) ([]*models.User, error) {
 	for rows.Next() {
 		user := &models.User{}
 		if err := rows.Scan(
-			&user.ID, &user.Username, &user.Email,
-			&user.Password, &user.IsAdmin,
-			&user.ProfilePicture, &user.CreatedAt, &user.UpdatedAt,
+			&user.ID, &user.Username, &user.Password,
+			&user.Email, &user.IsAdmin, &user.ProfilePicture,
+			&user.CreatedAt, &user.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}
@@ -55,10 +55,10 @@ func GetUserByUsername(db *sql.DB, username string) (*models.User, error) {
 		&user.ID, &user.Username, &user.Password, &user.Email, &user.IsAdmin,
 		&user.ProfilePicture, &user.CreatedAt, &user.UpdatedAt,
 	)
-
 	if err != nil {
 		return nil, err
 	}
+
 	return user, nil
 }
 

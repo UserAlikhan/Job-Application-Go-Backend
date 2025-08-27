@@ -1,4 +1,3 @@
-// BUSINESS LOGIC
 package services
 
 import (
@@ -19,6 +18,7 @@ func RegisterUser(db *sql.DB, user *models.User) error {
 	}
 
 	user.Password = string(hashedPassword)
+
 	return repository.CreateUser(db, user)
 }
 
@@ -32,7 +32,7 @@ func LoginUser(db *sql.DB, username string, password string) (string, error) {
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		return "", err
 	}
-	log.Println("Passwords match")
+
 	// access the utils package that generates a token
 	return utils.GenerateToken(user.ID, user.Username, user.IsAdmin)
 }

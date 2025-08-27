@@ -1,3 +1,3 @@
-GET http://localhost:8080/users/3
+GET http://localhost:8080/users/5
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiIiLCJpc0FkbWluIjpmYWxzZSwiZXhwIjoxNzU2MjAzNTg3fQ.5x5Ym0ou-6E8QOB4yAog6CW1Cn_nokwASPHCU-1NeYo
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiIiLCJpc0FkbWluIjpmYWxzZSwiZXhwIjoxNzU2MzI3NjI2fQ.2vOkQrWx4YzIDiZqaXi0sPQ7g_6AfLm1p-gwH_hDmJU
