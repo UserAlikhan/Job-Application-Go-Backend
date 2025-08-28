@@ -84,3 +84,42 @@ func GetJobsByUserID(db *sql.DB, userID int) ([]*models.Job, error) {
 
 	return jobs, nil
 }
+
+func GetJobByID(db *sql.DB, id int) (*models.Job, error) {
+	job := &models.Job{}
+
+	err := db.QueryRow(
+		"SELECT * FROM jobs WHERE id = ?",
+		id,
+	).Scan(
+		&job.ID, &job.Title, &job.Description, &job.Location,
+		&job.Company, &job.Salary, &job.UserID,
+		&job.CreatedAt, &job.UpdatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return job, nil
+}
+
+func UpdateJob(db *sql.DB, job *models.Job) (*models.Job, error) {
+	_, err := db.Exec(`
+			UPDATE jobs SET title = ?, description = ?, location = ?, company = ?, salary = ?, user_id = ? WHERE id = ?
+		`, job.Title, job.Description, job.Location, job.Company, job.Salary, job.UserID, job.ID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return job, nil
+}
+
+func DeleteJob(db *sql.DB, id int) error {
+	_, err := db.Exec("DELETE FROM jobs WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

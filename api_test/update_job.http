@@ -1,0 +1,12 @@
+PUT http://localhost:8080/jobs/2
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImlzQWRtaW4iOmZhbHNlLCJleHAiOjE3NTYzNjIwMDF9.zZ8I9MsQxYLK4nQtUWOxETKvmiiokdVA9a_UFGmw45M
+
+{
+    "title": "Elektrik",
+    "description": "Elektik III Razarada",
+    "location": "New York City, New York, United States",
+    "company": "Citadel",
+    "salary": "$85,000",
+    "user_id": 7
+}

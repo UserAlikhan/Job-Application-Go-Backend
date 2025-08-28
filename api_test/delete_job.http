@@ -1,0 +1,3 @@
+DELETE http://localhost:8080/jobs/3
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImlzQWRtaW4iOmZhbHNlLCJleHAiOjE3NTY0MTU1ODd9.LNdj179Y1BuadOcV3AlFDjNSWTJthSkyjZBTtW0GgY4
