@@ -51,6 +51,9 @@ func createTable(db *sql.DB) error {
 
 			FOREIGN KEY (user_id) REFERENCES users(id)
 		);
+		
+		INSERT OR IGNORE INTO users (username, password, email, isAdmin)
+		VALUES ('admin', 'admin', 'admin@gmail.com', true);
 	`)
 
 	return err

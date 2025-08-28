@@ -3,6 +3,7 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
+	"job_portal/internal/models"
 	"job_portal/internal/services"
 	"net/http"
 	"os"
@@ -123,5 +124,54 @@ func UpdateUserProfilePicture(db *sql.DB) gin.HandlerFunc {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{"message": "Profile picture was uploaded successfully"})
+	}
+}
+
+func DeleteUserHandler(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		// Check if user is Admin
+		isAdmin := ctx.GetBool("isAdmin")
+		if !isAdmin {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized to delete user"})
+			return
+		}
+		// Check if entered id is correct
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user id"})
+			return
+		}
+		// Check if user is trying to delete himself
+		currentUserID := ctx.GetInt("userID")
+		if currentUserID == id {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "User cannot delete himself / herself"})
+			return
+		}
+
+		if err := services.DeleteUser(ctx, db, id); err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"message": "User was deleted successfully"})
+	}
+}
+
+func ChangePasswordHandler(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var req models.ChangePassword
+		if err := ctx.ShouldBindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		userID := ctx.GetInt("userID")
+		err := services.ChangePassword(db, userID, req.CurrentPassword, req.NewPassword)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"message": "Password was changed successfully"})
 	}
 }

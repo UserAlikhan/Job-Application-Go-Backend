@@ -13,6 +13,7 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 		// AUTH ROUTES
 		r.POST("/login", handlers.LoginHandler(db))
 		r.POST("/register", handlers.RegisterHandler(db))
+		r.POST("/forgetPassword", handlers.ForgetPasswordHandler(db))
 
 		// USER ROUTES (Apply AuthMiddleware)
 		authenticated := r.Group("/")
@@ -20,6 +21,8 @@ func InitRoutes(r *gin.Engine, db *sql.DB) {
 		authenticated.GET("/users/:id", handlers.GetUserByIdHandler(db))
 		authenticated.PATCH("/users/:id", handlers.UpdateUserProfileHandler(db))
 		authenticated.PATCH("/users/:id/picture", handlers.UpdateUserProfilePicture(db))
+		authenticated.DELETE("/users/:id", handlers.DeleteUserHandler(db))
+		authenticated.PUT("users/change-password", middlewares.PasswordValidationMiddleware(), handlers.ChangePasswordHandler(db))
 		//
 		r.GET("/users", handlers.GetAllUsersHandler(db))
 

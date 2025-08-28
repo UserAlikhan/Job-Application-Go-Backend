@@ -45,3 +45,21 @@ func RegisterHandler(db *sql.DB) gin.HandlerFunc {
 		ctx.JSON(http.StatusCreated, gin.H{"message": "User was created successfully"})
 	}
 }
+
+func ForgetPasswordHandler(db *sql.DB) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var req models.ForgetPassword
+		if err := ctx.ShouldBindJSON(&req); err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		password, err := services.ForgetPassword(db, req.Username)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"message": password})
+	}
+}

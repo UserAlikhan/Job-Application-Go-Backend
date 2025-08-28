@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 	"job_portal/internal/models"
 )
 
@@ -103,6 +104,60 @@ func UploadProfilePicture(db *sql.DB, id int, profilePicture string) error {
 	_, err := db.Exec("UPDATE users SET profile_picture = ? WHERE id = ?", profilePicture, id)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func UpdateUserPassword(db *sql.DB, user *models.User) error {
+	_, err := db.Exec(
+		`UPDATE users SET password = ? WHERE id = ?`,
+		user.Password, user.ID,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteUserWithTransaction(tx *sql.Tx, userID int) error {
+	// Delete associated jobs
+	_, err := tx.Exec("DELETE FROM jobs WHERE user_id = ?", userID)
+	if err != nil {
+		return fmt.Errorf("Error deleting user's jobs: %v", err)
+	}
+
+	// Delete the user
+	result, err := tx.Exec("DELETE FROM users WHERE id = ?", userID)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+
+	return nil
+}
+
+func ChangePassword(db *sql.DB, userID int, currentPassword string, hashedNewPassword string) error {
+	result, err := db.Exec(`UPDATE users SET password = ? WHERE id = ?`, hashedNewPassword, userID)
+	if err != nil {
+		return err
+	}
+
+	// check if update actually affected a row
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("Error checking update result: %v", err)
+	}
+	if rowsAffected == 0 {
+		return fmt.Errorf("No user found with id %d", userID)
 	}
 
 	return nil
